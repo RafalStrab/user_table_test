@@ -1,0 +1,199 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 top-bar">
+            <a class="btn btn-success pull-right" href="{{ path('client_new') }}">
+                Create a new client
+            </a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active">
+                    <a href="#all" aria-controls="all" role="tab" data-toggle="tab">All</a>
+                </li>
+                <li role="presentation">
+                    <a href="#referred" aria-controls="referred" role="tab" data-toggle="tab">Referred</a>
+                </li>
+                <li role="presentation">
+                    <a href="#accepted" aria-controls="accepted" role="tab" data-toggle="tab">Accepted</a>
+                </li>
+                <li role="presentation">
+                    <a href="#rejected" aria-controls="rejected" role="tab" data-toggle="tab">Rejected</a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="all">
+                    <table id="clients_list" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Firstname</th>
+                                <th>Surname</th>
+                                <th>Dateofbirth</th>
+                                <th>Email</th>
+                                <th>Mobilephone</th>
+                                <th>Status</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for entity in entities %}
+                            <tr>
+                                <td>{{ entity.title }}</td>
+                                <td><a href="{{ path('client_show', { 'id': entity.id }) }}">{{ entity.firstName }}</a></td>
+                                <td>{{ entity.surname }}</td>
+                                <td>{% if entity.dateOfBirth %}{{ entity.dateOfBirth|date('Y-m-d') }}{% endif %}</td>
+                                <td>{{ entity.email }}</td>
+                                <td>{{ entity.mobilePhone }}</td>
+                                <td>
+                                    {% if entity.status == 0 %}
+                                        <span class="label label-warning">Referred</span>
+                                    {% elseif entity.status == 1 %}
+                                        <span class="label label-success">Accepted</span>
+                                    {% elseif entity.status == 2 %}
+                                        <span class="label label-danger">Rejected</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <a class="btn btn-xs btn-info" href="{{ path('client_show', { 'id': entity.id }) }}"><i class="fa fa-eye"></i></a>
+                                    {% if entity.status == 0 %}
+                                        <a class="btn btn-xs btn-success" href="{{ path('client_status_update', { 'id': entity.id, 'status': 1 }) }}"><i class="fa fa-check-circle-o"></i></a>
+                                        <a class="btn btn-xs btn-danger" href="{{ path('client_status_update', { 'id': entity.id, 'status': 2 }) }}"><i class="fa fa-ban"></i></a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="referred">
+                    <table id="clients_list_referred" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Firstname</th>
+                                <th>Surname</th>
+                                <th>Dateofbirth</th>
+                                <th>Email</th>
+                                <th>Mobilephone</th>
+                                <th>Status</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for entityReferred in entitiesReferred %}
+                            <tr>
+                                <td>{{ entityReferred.title }}</td>
+                                <td>{{ entityReferred.firstName }}</td>
+                                <td>{{ entityReferred.surname }}</td>
+                                <td>{% if entityReferred.dateOfBirth %}{{ entityReferred.dateOfBirth|date('Y-m-d') }}{% endif %}</td>
+                                <td>{{ entityReferred.email }}</td>
+                                <td>{{ entityReferred.mobilePhone }}</td>
+                                <td>
+                                    {% if entityReferred.status == 0 %}
+                                        <span class="label label-warning">Referred</span>
+                                    {% elseif entityReferred.status == 1 %}
+                                        <span class="label label-success">Accepted</span>
+                                    {% elseif entityReferred.status == 2 %}
+                                        <span class="label label-danger">Rejected</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <a class="btn btn-xs btn-success" href="{{ path('client_show', { 'id': entityReferred.id }) }}"><i class="fa fa-eye"></i></a>
+                                    <a class="btn btn-xs btn-info" href="{{ path('client_edit', { 'id': entityReferred.id }) }}"><i class="fa fa-pencil-square-o"></i></a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="accepted">
+                    <table id="clients_list_accepted" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Firstname</th>
+                                <th>Surname</th>
+                                <th>Dateofbirth</th>
+                                <th>Email</th>
+                                <th>Mobilephone</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for entityAccepted in entitiesAccepted %}
+                            <tr>
+                                <td>{{ entityAccepted.title }}</td>
+                                <td><a href="{{ path('client_show', { 'id': entityAccepted.id }) }}">{{ entityAccepted.firstName }}</a></td>
+                                <td>{{ entityAccepted.surname }}</td>
+                                <td>{% if entityAccepted.dateOfBirth %}{{ entityAccepted.dateOfBirth|date('Y-m-d') }}{% endif %}</td>
+                                <td>{{ entityAccepted.email }}</td>
+                                <td>{{ entityAccepted.mobilePhone }}</td>
+                                <td>
+                                    {% if entityAccepted.status == 0 %}
+                                        <span class="label label-warning">Referred</span>
+                                    {% elseif entityAccepted.status == 1 %}
+                                        <span class="label label-success">Accepted</span>
+                                    {% elseif entityAccepted.status == 2 %}
+                                        <span class="label label-danger">Rejected</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <a class="btn btn-xs btn-success" href="{{ path('client_show', { 'id': entityAccepted.id }) }}"><i class="fa fa-eye"></i></a>
+                                    <a class="btn btn-xs btn-info" href="{{ path('client_edit', { 'id': entityAccepted.id }) }}"><i class="fa fa-pencil-square-o"></i></a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="rejected">
+                    <table id="clients_list_rejected" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Firstname</th>
+                                <th>Surname</th>
+                                <th>Dateofbirth</th>
+                                <th>Email</th>
+                                <th>Mobilephone</th>
+                                <th>Status</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for entityRejected in entitiesRejected %}
+                            <tr>
+                                <td>{{ entityRejected.title }}</td>
+                                <td><a href="{{ path('client_show', { 'id': entityRejected.id }) }}">{{ entityRejected.firstName }}</a></td>
+                                <td>{{ entityRejected.surname }}</td>
+                                <td>{% if entityRejected.dateOfBirth %}{{ entityRejected.dateOfBirth|date('Y-m-d') }}{% endif %}</td>
+                                <td>{{ entityRejected.email }}</td>
+                                <td>{{ entityRejected.mobilePhone }}</td>
+                                <td>
+                                    {% if entityRejected.status == 0 %}
+                                        <span class="label label-warning">Referred</span>
+                                    {% elseif entityRejected.status == 1 %}
+                                        <span class="label label-success">Accepted</span>
+                                    {% elseif entityRejected.status == 2 %}
+                                        <span class="label label-danger">Rejected</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <a class="btn btn-xs btn-success" href="{{ path('client_show', { 'id': entityRejected.id }) }}"><i class="fa fa-eye"></i></a>
+                                    <a class="btn btn-xs btn-info" href="{{ path('client_edit', { 'id': entityRejected.id }) }}"><i class="fa fa-pencil-square-o"></i></a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

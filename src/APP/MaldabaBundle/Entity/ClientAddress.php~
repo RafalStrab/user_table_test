@@ -1,0 +1,102 @@
+<?php
+
+namespace APP\MaldabaBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
+
+/**
+ * ClientAddress
+ *
+ * @ORM\Table(
+ *      name="client_addresses",
+ *      indexes={
+ *          @ORM\Index(
+ *              name="search_idx", columns={
+ *                  "postcode",
+ *                  "line_1",
+ *                  "line_2",
+ *                  "city",
+ *              }
+ *          ),
+ *          @ORM\Index(
+ *              name="search_idx_1", columns={
+ *                  "country",
+ *                  "created_at",
+ *                  "updated_at"
+ *              }
+ *          )
+ *      }
+ * )
+ * @ORM\Entity(repositoryClass="APP\MaldabaBundle\Entity\ClientAddressRepository")
+ */
+class ClientAddress
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var integer
+     *
+     * @ORM\ManyToOne(targetEntity="Client")
+     * @ORM\JoinColumn(name="client", referencedColumnName="id", onDelete="CASCADE", nullable=false)
+     */
+    private $client;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="line_1", type="string", length=255)
+     */
+    private $line1;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="line_2", type="string", length=255)
+     */
+    private $line2;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="postcode", type="string", length=15)
+     */
+    private $postcode;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="country", type="string", length=255)
+     */
+    private $country;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="city", type="string", length=255)
+     */
+    private $city;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="created_at", type="datetime")
+     * @Gedmo\Timestampable(on="create")
+     */
+    private $createdAt;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="updated_at", type="datetime")
+     * @Gedmo\Timestampable(on="update")
+     */
+    private $updatedAt;
+}

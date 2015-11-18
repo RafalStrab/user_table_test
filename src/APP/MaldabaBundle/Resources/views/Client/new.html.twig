@@ -1,0 +1,18 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+	<div class="container">
+		
+    <h1>New Client</h1>
+
+    {{ form(form) }}
+
+        <ul class="record_actions">
+    <li>
+        <a href="{{ path('client') }}">
+            Back to the list
+        </a>
+    </li>
+</ul>
+	</div>
+{% endblock %}
